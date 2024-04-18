@@ -17,6 +17,7 @@ public class Client extends WebSocketClient {
     public Client(URI uri) throws URISyntaxException {
         super(uri);
     }
+
     public void send(String message) {
         while (true) {
             try {

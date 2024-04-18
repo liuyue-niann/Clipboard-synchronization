@@ -3,11 +3,8 @@ package org.sync.clipboard;
 import org.sync.clipboard.listen.ClipboardListen;
 import org.sync.clipboard.net.NetClient;
 import org.sync.clipboard.net.Server;
-import org.sync.clipboard.sync.ClipboardApp;
-import org.sync.clipboard.utils.ConfUtils;
 
 import java.awt.*;
-import java.util.Set;
 
 public class SyncClipboardApp implements ClipboardListen {
 
