@@ -39,7 +39,17 @@ public class ClipboardApp {
                     if (!oldText.equals(text)) {
                         StringSelection selection = new StringSelection(text);
                         clipboard.setContents(selection, null);
-                        log.info("read Clipboard:{}", text);
+                        log.info("写入剪贴板文本:{}", text);
+                    }
+                } else if (clipboard.isDataFlavorAvailable(DataFlavor.imageFlavor)) {
+                    Transferable contents = clipboard.getContents(null);
+                    Image oldImg = (Image) contents.getTransferData(DataFlavor.imageFlavor);
+                    Image newImg = ImgUtils.stringToImage(text);
+                    //比较新对象是否跟剪贴板对象相同
+                    if (!ImgUtils.compareImages(oldImg, newImg)) {
+                        ImageSelection selection = new ImageSelection(newImg);
+                        clipboard.setContents(selection, null);
+                        log.info("写入剪贴板图片:{}", text);
                     }
                 }
             } catch (Exception e) {

@@ -43,8 +43,24 @@ public class ImgUtils {
             e.printStackTrace();
             return null;
         }
+    }
 
+    public static boolean compareImages(BufferedImage imageA, BufferedImage imageB) {
+        if (imageA.getWidth() != imageB.getWidth() || imageA.getHeight() != imageB.getHeight()) {
+            return false;
+        }
+        for (int y = 0; y < imageA.getHeight(); y++) {
+            for (int x = 0; x < imageA.getWidth(); x++) {
+                if (imageA.getRGB(x, y) != imageB.getRGB(x, y)) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
 
+    public static boolean compareImages(Image imageA, Image imageB) {
+        return compareImages(toBufferedImage(imageA), toBufferedImage(imageB));
     }
 
     private static boolean isValidBase64(String str) {
