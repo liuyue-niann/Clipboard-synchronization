@@ -28,20 +28,31 @@ public class ClipboardApp {
      * 写入剪贴板
      */
     public static void read(String text) {
-        try {
-            Image image = ImgUtils.stringToImage(text);
-            if (image==null) {
-                StringSelection selection = new StringSelection(text);
-                            clipboard.setContents(selection, null);
-                            log.info("写入剪贴板文本:{}", text);
-            }else {
-                 ImageSelection selection = new ImageSelection(image);
-                            clipboard.setContents(selection, null);
-                            log.info("写入剪贴板图片:{}", text);
+        Image image = ImgUtils.stringToImage(text);
+            try {
+                if (image==null && clipboard.isDataFlavorAvailable(DataFlavor.stringFlavor)) {
+                    Transferable contents = clipboard.getContents(null);
+                    String oldText = (String) contents.getTransferData(DataFlavor.stringFlavor);
+                    if (!oldText.equals(text)) {
+                        StringSelection selection = new StringSelection(text);
+                        clipboard.setContents(selection, null);
+                        log.info("写入剪贴板文本:{}", text);
+                    }
+                } else if (image !=null && clipboard.isDataFlavorAvailable(DataFlavor.imageFlavor)) {
+                    Transferable contents = clipboard.getContents(null);
+                    Image oldImg = (Image) contents.getTransferData(DataFlavor.imageFlavor);
+                    Image newImg = ImgUtils.stringToImage(text);
+                    //比较新对象是否跟剪贴板对象相同
+                    if ( !ImgUtils.compareImages(oldImg, newImg)) {
+                        ImageSelection selection = new ImageSelection(newImg);
+                        clipboard.setContents(selection, null);
+                        log.info("写入剪贴板图片:{}", text);
+                    }
+                }
+            } catch (Exception e) {
+                throw new RuntimeException(e);
             }
-        }catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+
     }
 
     public static void read(Image image) {
