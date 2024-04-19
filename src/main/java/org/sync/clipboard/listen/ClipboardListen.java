@@ -90,9 +90,7 @@ public abstract class ClipboardListen {
                         }
                     }
                      ClipboardListen.setLastClipboardContent(clipboardContent);
-
                 }
-
                 // 等待一段时间后再次轮询
                 try {
                     Thread.sleep(1000); // 等待1秒
