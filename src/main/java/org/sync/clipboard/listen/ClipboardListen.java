@@ -25,7 +25,7 @@ public abstract class ClipboardListen {
 
 
     private void listen() {
-                // 创建一个线程来执行轮询任务
+        // 创建一个线程来执行轮询任务
         Thread pollingThread = new Thread(() -> {
             while (true) {
                 // 检查剪贴板内容是否发生变化
@@ -35,8 +35,8 @@ public abstract class ClipboardListen {
                         try {
                             //剪贴板新增了文字
                             Object data = clipboardContent.getTransferData(DataFlavor.stringFlavor);
-                            log.info("剪贴板新增了文字:{}",data);
-                            change(data,String.class);
+                            log.info("剪贴板新增了文字:{}", data);
+                            change(data, String.class);
                         } catch (UnsupportedFlavorException | IOException e) {
                             throw new RuntimeException(e);
                         }
@@ -45,7 +45,7 @@ public abstract class ClipboardListen {
                             // 剪贴板新增了图片
                             Object data = clipboardContent.getTransferData(DataFlavor.imageFlavor);
                             log.info("剪贴板新增了图像:{}", data);
-                            change(data,Image.class);
+                            change(data, Image.class);
                         } catch (UnsupportedFlavorException | IOException e) {
                             throw new RuntimeException(e);
                         }
@@ -66,7 +66,7 @@ public abstract class ClipboardListen {
         pollingThread.start();
     }
 
-     private static Transferable getClipboardContent() {
+    private static Transferable getClipboardContent() {
         Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
         return clipboard.getContents(null);
     }
@@ -98,7 +98,7 @@ public abstract class ClipboardListen {
     }
 
 
-     private static boolean compareImages(BufferedImage     imageA, BufferedImage imageB) {
+    private static boolean compareImages(BufferedImage imageA, BufferedImage imageB) {
         if (imageA.getWidth() != imageB.getWidth() || imageA.getHeight() != imageB.getHeight()) {
             return false;
         }

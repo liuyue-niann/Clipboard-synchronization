@@ -1,7 +1,10 @@
 package org.sync.clipboard.test.listen;
 
 import java.awt.*;
-import java.awt.datatransfer.*;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.DataFlavor;
+import java.awt.datatransfer.Transferable;
+import java.awt.datatransfer.UnsupportedFlavorException;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 
@@ -19,7 +22,7 @@ public class ClipboardPollingExample {
                         try {
                             //剪贴板新增了文字
                             Object data = clipboardContent.getTransferData(DataFlavor.stringFlavor);
-                            System.out.println("发生改变:"+data);
+                            System.out.println("发生改变:" + data);
                         } catch (UnsupportedFlavorException | IOException e) {
                             throw new RuntimeException(e);
                         }
@@ -80,7 +83,7 @@ public class ClipboardPollingExample {
     }
 
 
-     private static boolean compareImages(BufferedImage     imageA, BufferedImage imageB) {
+    private static boolean compareImages(BufferedImage imageA, BufferedImage imageB) {
         if (imageA.getWidth() != imageB.getWidth() || imageA.getHeight() != imageB.getHeight()) {
             return false;
         }
