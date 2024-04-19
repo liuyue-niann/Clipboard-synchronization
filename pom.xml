@@ -9,8 +9,8 @@
     <version>1.0</version>
 
     <properties>
-        <maven.compiler.source>21</maven.compiler.source>
-        <maven.compiler.target>21</maven.compiler.target>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
     <dependencies>
@@ -34,26 +34,33 @@
     </dependencies>
 
 
-        <build>
+    <build>
         <plugins>
-            <!-- 添加 native-image-maven-plugin 插件 -->
+            <!-- 使用 Maven Compiler 插件进行编译 -->
             <plugin>
-                <groupId>org.graalvm.nativeimage</groupId>
-                <artifactId>native-image-maven-plugin</artifactId>
-                <version>21.0.0</version>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.8.1</version>
                 <configuration>
-                    <!-- 设置主入口类 -->
-                    <mainClass>org.sync.clipboard.SyncClipboardApp</mainClass>
+                    <!-- 指定编译使用的 JDK 版本 -->
+                    <release>17</release>
                 </configuration>
-                <executions>
-                    <execution>
-                        <goals>
-                            <!-- 执行 native-image 目标 -->
-                            <goal>native-image</goal>
-                        </goals>
-                    </execution>
-                </executions>
+            </plugin>
+
+            <!-- 使用 Maven JAR 插件进行打包 -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>3.2.0</version>
+                <configuration>
+                     <archive>
+                        <manifest>
+                            <mainClass>org.sync.clipboard.SyncClipboardApp</mainClass>
+                        </manifest>
+                    </archive>
+                </configuration>
             </plugin>
         </plugins>
     </build>
+
 </project>
