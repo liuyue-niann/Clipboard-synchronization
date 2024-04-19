@@ -4,9 +4,7 @@ import org.java_websocket.client.WebSocketClient;
 import org.java_websocket.handshake.ServerHandshake;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.sync.clipboard.sync.ClipboardApp;
 
-import java.awt.*;
 import java.net.URI;
 import java.net.URISyntaxException;
 
@@ -27,6 +25,7 @@ public class Client extends WebSocketClient {
                     log.info("发送数据:{}", message);
                     break;
                 }
+                Thread.sleep(50);
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }
@@ -34,14 +33,6 @@ public class Client extends WebSocketClient {
         }
     }
 
-    /**
-     * 发送图片
-     *
-     * @param image
-     */
-    public void send(Image image) {
-        //TODO
-    }
 
     @Override
     public void onOpen(ServerHandshake serverHandshake) {
@@ -50,8 +41,7 @@ public class Client extends WebSocketClient {
 
     @Override
     public void onMessage(String s) {
-        //接收到其他设备的消息,进行同步
-        ClipboardApp.read(s);
+        log.info("client:msg:{}", s);
     }
 
     @Override

@@ -2,6 +2,7 @@ package org.sync.clipboard.sync;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.sync.clipboard.listen.ClipboardListen;
 import org.sync.clipboard.utils.ImgUtils;
 
 import java.awt.*;
@@ -39,6 +40,7 @@ public class ClipboardApp {
                 clipboard.setContents(selection, null);
                 log.info("写入剪贴板图片:{}", text);
             }
+            ClipboardListen.setLastClipboardContent(getClipboardContent());
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -51,7 +53,11 @@ public class ClipboardApp {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
+    }
 
+    public static Transferable getClipboardContent() {
+        Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+        return clipboard.getContents(null);
     }
 
 }
@@ -91,4 +97,6 @@ class ImageSelection implements Transferable {
             throw new UnsupportedFlavorException(flavor);
         }
     }
+
+
 }
