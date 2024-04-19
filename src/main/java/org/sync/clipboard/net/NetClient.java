@@ -1,5 +1,7 @@
 package org.sync.clipboard.net;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.sync.clipboard.utils.ConfUtils;
 
 import java.net.URI;
@@ -9,6 +11,8 @@ import java.util.Set;
 
 public class NetClient {
 
+    private static final Logger log = LoggerFactory.getLogger(NetClient.class);
+
     /**
      * 将数据发送给所有设备
      */
@@ -16,6 +20,7 @@ public class NetClient {
         Set<String> ipList = ConfUtils.getConfIpList();
         for (String ip : ipList) {
             String str = "ws://%s:7788/websocket".formatted(ip);
+            log.info("ip:{}", str);
             try {
                 URI uri = new URI(str);
                 Client client = new Client(uri);
