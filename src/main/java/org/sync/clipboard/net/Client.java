@@ -22,16 +22,15 @@ public class Client extends WebSocketClient {
     public void send(String message) {
         while (true) {
             try {
-                if (isOpen()) {
+                    if (isOpen()) {
                     super.send(message);
-
                     log.info("send:{}", message);
                     break;
                 }
-                Thread.sleep(200);
-            } catch (InterruptedException e) {
+            }catch (Exception e) {
                 throw new RuntimeException(e);
             }
+
         }
     }
 

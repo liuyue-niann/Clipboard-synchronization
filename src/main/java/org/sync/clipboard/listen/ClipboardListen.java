@@ -34,7 +34,7 @@ public interface ClipboardListen {
         // Keep the program running so it can listen to clipboard changes
         while (true) {
             try {
-                Thread.sleep(500);
+                Thread.sleep(2000);
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
