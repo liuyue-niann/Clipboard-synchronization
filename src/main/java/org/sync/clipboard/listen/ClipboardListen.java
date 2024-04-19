@@ -20,12 +20,56 @@ public abstract class ClipboardListen {
     private static final Logger log = LoggerFactory.getLogger(ClipboardListen.class);
     Transferable lastClipboardContent = null;
 
+    private static Transferable getClipboardContent() {
+        Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+        return clipboard.getContents(null);
+    }
+
+    private static boolean isTransferableEqual(Transferable a, Transferable b) {
+        if (a == null || b == null) {
+            return a == b;
+        }
+        if (a.isDataFlavorSupported(DataFlavor.stringFlavor) && b.isDataFlavorSupported(DataFlavor.stringFlavor)) {
+            try {
+                String dataA = (String) a.getTransferData(DataFlavor.stringFlavor);
+                String dataB = (String) b.getTransferData(DataFlavor.stringFlavor);
+                return dataA.equals(dataB);
+            } catch (UnsupportedFlavorException | IOException e) {
+                e.printStackTrace();
+                return false;
+            }
+        } else if (a.isDataFlavorSupported(DataFlavor.imageFlavor) && b.isDataFlavorSupported(DataFlavor.imageFlavor)) {
+            try {
+                BufferedImage imageA = (BufferedImage) a.getTransferData(DataFlavor.imageFlavor);
+                BufferedImage imageB = (BufferedImage) b.getTransferData(DataFlavor.imageFlavor);
+                return compareImages(imageA, imageB);
+            } catch (UnsupportedFlavorException | IOException e) {
+                e.printStackTrace();
+                return false;
+            }
+        }
+        return false;
+    }
+
+    private static boolean compareImages(BufferedImage imageA, BufferedImage imageB) {
+        if (imageA.getWidth() != imageB.getWidth() || imageA.getHeight() != imageB.getHeight()) {
+            return false;
+        }
+        for (int y = 0; y < imageA.getHeight(); y++) {
+            for (int x = 0; x < imageA.getWidth(); x++) {
+                if (imageA.getRGB(x, y) != imageB.getRGB(x, y)) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
     protected void start() {
         listen();
     }
 
     public abstract void change(Object object, Class<?> clazz);
-
 
     private void listen() {
         // 创建一个线程来执行轮询任务
@@ -66,52 +110,6 @@ public abstract class ClipboardListen {
         });
         // 启动线程
         pollingThread.start();
-    }
-
-    private static Transferable getClipboardContent() {
-        Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
-        return clipboard.getContents(null);
-    }
-
-    private static boolean isTransferableEqual(Transferable a, Transferable b) {
-        if (a == null || b == null) {
-            return a == b;
-        }
-        if (a.isDataFlavorSupported(DataFlavor.stringFlavor) && b.isDataFlavorSupported(DataFlavor.stringFlavor)) {
-            try {
-                String dataA = (String) a.getTransferData(DataFlavor.stringFlavor);
-                String dataB = (String) b.getTransferData(DataFlavor.stringFlavor);
-                return dataA.equals(dataB);
-            } catch (UnsupportedFlavorException | IOException e) {
-                e.printStackTrace();
-                return false;
-            }
-        } else if (a.isDataFlavorSupported(DataFlavor.imageFlavor) && b.isDataFlavorSupported(DataFlavor.imageFlavor)) {
-            try {
-                BufferedImage imageA = (BufferedImage) a.getTransferData(DataFlavor.imageFlavor);
-                BufferedImage imageB = (BufferedImage) b.getTransferData(DataFlavor.imageFlavor);
-                return compareImages(imageA, imageB);
-            } catch (UnsupportedFlavorException | IOException e) {
-                e.printStackTrace();
-                return false;
-            }
-        }
-        return false;
-    }
-
-
-    private static boolean compareImages(BufferedImage imageA, BufferedImage imageB) {
-        if (imageA.getWidth() != imageB.getWidth() || imageA.getHeight() != imageB.getHeight()) {
-            return false;
-        }
-        for (int y = 0; y < imageA.getHeight(); y++) {
-            for (int x = 0; x < imageA.getWidth(); x++) {
-                if (imageA.getRGB(x, y) != imageB.getRGB(x, y)) {
-                    return false;
-                }
-            }
-        }
-        return true;
     }
 
 

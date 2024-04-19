@@ -2,19 +2,13 @@ package org.sync.clipboard.net;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.sync.clipboard.sync.ClipboardApp;
 import org.sync.clipboard.utils.ConfUtils;
 import org.sync.clipboard.utils.ImgUtils;
 
-import javax.imageio.ImageIO;
 import java.awt.*;
-import java.awt.datatransfer.Clipboard;
 import java.awt.image.BufferedImage;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.Base64;
 import java.util.Set;
 
 
@@ -29,7 +23,7 @@ public class NetClient {
         Set<String> ipList = ConfUtils.getConfIpList();
         for (String ip : ipList) {
             String str = "ws://%s:7788/websocket".formatted(ip);
-            log.info("data——to:{}",ip);
+            log.info("data——to:{}", ip);
             try {
                 URI uri = new URI(str);
                 Client client = new Client(uri);

@@ -33,7 +33,7 @@ public class Server extends WebSocketServer {
     public void onMessage(WebSocket webSocket, String s) {
         //写入剪贴板
         ClipboardApp.read(s);
-        log.info("接收并写入数据:{}",s);
+        log.info("接收并写入数据:{}", s);
     }
 
     @Override

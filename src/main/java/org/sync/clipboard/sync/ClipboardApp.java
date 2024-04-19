@@ -25,10 +25,9 @@ public class ClipboardApp {
     }
 
 
-    private static boolean isString(Transferable transferable){
+    private static boolean isString(Transferable transferable) {
         return transferable.isDataFlavorSupported(DataFlavor.stringFlavor);
     }
-
 
 
     /**
@@ -36,24 +35,23 @@ public class ClipboardApp {
      */
     public static void read(String text) {
         Image image = ImgUtils.stringToImage(text);
-        if (image!=null){
+        if (image != null) {
             read(image);
-        }else {
+        } else {
             Transferable transferable = write();
             if (isString(transferable)) {
-
-                try{
-String oldText = (String) transferable.getTransferData(DataFlavor.stringFlavor);
-                if (!oldText.equals(text)) {
+                try {
+                    String oldText =(String) transferable.getTransferData(DataFlavor.stringFlavor);
+                    if (!oldText.equals(text)) {
                         StringSelection selection = new StringSelection(text);
                         clipboard.setContents(selection, null);
                         log.info("read Clipboard:{}", text);
-                }
-                }catch (Exception e){
+
+                    }
+                } catch (Exception e) {
                     throw new RuntimeException(e);
                 }
 
-            }
             }
 
         }
