@@ -1,31 +1,15 @@
-package org.sync.clipboard.listen;
-
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+package org.sync.clipboard.test.listen;
 
 import java.awt.*;
-import java.awt.datatransfer.Clipboard;
-import java.awt.datatransfer.DataFlavor;
-import java.awt.datatransfer.Transferable;
-import java.awt.datatransfer.UnsupportedFlavorException;
+import java.awt.datatransfer.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 
-public abstract class ClipboardListen {
+public class ClipboardPollingExample {
+    private static Transferable lastClipboardContent = null;
 
-    private static final Logger log = LoggerFactory.getLogger(ClipboardListen.class);
-    Transferable lastClipboardContent = null;
-
-    protected void start() {
-        listen();
-    }
-
-    public abstract void change(Object object, Class<?> clazz);
-
-
-    private void listen() {
-                // 创建一个线程来执行轮询任务
+    public static void main(String[] args) {
+        // 创建一个线程来执行轮询任务
         Thread pollingThread = new Thread(() -> {
             while (true) {
                 // 检查剪贴板内容是否发生变化
@@ -35,8 +19,7 @@ public abstract class ClipboardListen {
                         try {
                             //剪贴板新增了文字
                             Object data = clipboardContent.getTransferData(DataFlavor.stringFlavor);
-                            log.info("剪贴板新增了文字:{}",data);
-                            change(data,String.class);
+                            System.out.println("发生改变:"+data);
                         } catch (UnsupportedFlavorException | IOException e) {
                             throw new RuntimeException(e);
                         }
@@ -44,8 +27,7 @@ public abstract class ClipboardListen {
                         try {
                             // 剪贴板新增了图片
                             Object data = clipboardContent.getTransferData(DataFlavor.imageFlavor);
-                            log.info("剪贴板新增了图像:{}", data);
-                            change(data,Image.class);
+                            System.out.println("发生改变（图像）");
                         } catch (UnsupportedFlavorException | IOException e) {
                             throw new RuntimeException(e);
                         }
@@ -66,7 +48,7 @@ public abstract class ClipboardListen {
         pollingThread.start();
     }
 
-     private static Transferable getClipboardContent() {
+    private static Transferable getClipboardContent() {
         Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
         return clipboard.getContents(null);
     }
@@ -111,6 +93,4 @@ public abstract class ClipboardListen {
         }
         return true;
     }
-
-
 }

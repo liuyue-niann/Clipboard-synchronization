@@ -6,7 +6,7 @@ import org.sync.clipboard.net.Server;
 
 import java.awt.*;
 
-public class SyncClipboardApp implements ClipboardListen {
+public class SyncClipboardApp extends ClipboardListen {
 
 
     public static void main(String[] args) {
