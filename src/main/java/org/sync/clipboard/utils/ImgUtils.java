@@ -16,10 +16,10 @@ public class ImgUtils {
     private static final Logger log = LoggerFactory.getLogger(ImgUtils.class);
 
     public static BufferedImage toBufferedImage(Image image) {
-        if (image==null) return null;
         if (image instanceof BufferedImage) {
             return (BufferedImage) image;
         }
+
         BufferedImage bufferedImage = new BufferedImage(
                 image.getWidth(null),
                 image.getHeight(null),
@@ -29,6 +29,7 @@ public class ImgUtils {
         Graphics2D g = bufferedImage.createGraphics();
         g.drawImage(image, 0, 0, null);
         g.dispose();
+
         return bufferedImage;
     }
 
@@ -45,8 +46,12 @@ public class ImgUtils {
     }
 
     public static boolean compareImages(BufferedImage imageA, BufferedImage imageB) {
-        if (imageA==null && imageB==null) return true;
-        if (imageA==null || imageB==null) return false;
+        if (imageA==null ) {
+            return false;
+        }
+        if (imageB==null ) {
+            return false;
+        }
         if (imageA.getWidth() != imageB.getWidth() || imageA.getHeight() != imageB.getHeight()) {
             return false;
         }
