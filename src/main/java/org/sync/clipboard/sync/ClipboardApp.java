@@ -19,21 +19,15 @@ public class ClipboardApp {
      *
      * @return string
      */
-    public static Object write() {
-        try {
-            Transferable contents = clipboard.getContents(null);
-            if (clipboard.isDataFlavorAvailable(DataFlavor.stringFlavor)){
-                return  contents.getTransferData(DataFlavor.stringFlavor);
-            } else if (contents.isDataFlavorSupported(DataFlavor.imageFlavor)) {
-                return contents.getTransferData(DataFlavor.imageFlavor);
-            }
-            return null;
+    public static Transferable write() {
+        return clipboard.getContents(null);
 
-        } catch (UnsupportedFlavorException | IOException e) {
-            throw new RuntimeException(e);
-        }
     }
 
+
+    private static boolean isString(Transferable transferable){
+        return transferable.isDataFlavorSupported(DataFlavor.stringFlavor);
+    }
 
 
 
@@ -45,16 +39,23 @@ public class ClipboardApp {
         if (image!=null){
             read(image);
         }else {
-            String oldText = (String) write();
-            if (!oldText.equals(text)) {
-                try {
-                    StringSelection selection = new StringSelection(text);
-                    clipboard.setContents(selection, null);
-                    log.info("read Clipboard:{}", text);
-                } catch (Exception e) {
+            Transferable transferable = write();
+            if (isString(transferable)) {
+
+                try{
+String oldText = (String) transferable.getTransferData(DataFlavor.stringFlavor);
+                if (!oldText.equals(text)) {
+                        StringSelection selection = new StringSelection(text);
+                        clipboard.setContents(selection, null);
+                        log.info("read Clipboard:{}", text);
+                }
+                }catch (Exception e){
                     throw new RuntimeException(e);
                 }
+
             }
+            }
+
         }
 
     }
