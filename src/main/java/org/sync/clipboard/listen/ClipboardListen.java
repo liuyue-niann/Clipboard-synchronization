@@ -53,6 +53,7 @@ public abstract class ClipboardListen {
                 return false;
             }
         }
+        ClipboardListen.setLastClipboardContent(ClipboardApp.getClipboardContent());
         return false;
     }
 
