@@ -29,11 +29,8 @@ public class ClipboardApp {
      */
     public static void read(String text) {
         Image image = ImgUtils.stringToImage(text);
-        if (image != null) {
-            read(image);
-        } else {
             try {
-                if (clipboard.isDataFlavorAvailable(DataFlavor.stringFlavor)) {
+                if (image==null && clipboard.isDataFlavorAvailable(DataFlavor.stringFlavor)) {
                     Transferable contents = clipboard.getContents(null);
                     String oldText = (String) contents.getTransferData(DataFlavor.stringFlavor);
                     if (!oldText.equals(text)) {
@@ -41,12 +38,12 @@ public class ClipboardApp {
                         clipboard.setContents(selection, null);
                         log.info("写入剪贴板文本:{}", text);
                     }
-                } else if (clipboard.isDataFlavorAvailable(DataFlavor.imageFlavor)) {
+                } else if (image !=null && clipboard.isDataFlavorAvailable(DataFlavor.imageFlavor)) {
                     Transferable contents = clipboard.getContents(null);
                     Image oldImg = (Image) contents.getTransferData(DataFlavor.imageFlavor);
                     Image newImg = ImgUtils.stringToImage(text);
                     //比较新对象是否跟剪贴板对象相同
-                    if (!ImgUtils.compareImages(oldImg, newImg)) {
+                    if ( !ImgUtils.compareImages(oldImg, newImg)) {
                         ImageSelection selection = new ImageSelection(newImg);
                         clipboard.setContents(selection, null);
                         log.info("写入剪贴板图片:{}", text);
@@ -55,7 +52,6 @@ public class ClipboardApp {
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }
-        }
 
     }
 
