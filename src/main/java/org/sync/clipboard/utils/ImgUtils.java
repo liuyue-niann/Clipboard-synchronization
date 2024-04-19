@@ -46,6 +46,12 @@ public class ImgUtils {
     }
 
     public static boolean compareImages(BufferedImage imageA, BufferedImage imageB) {
+        if (imageA==null ) {
+            return false;
+        }
+        if (imageB==null ) {
+            return false;
+        }
         if (imageA.getWidth() != imageB.getWidth() || imageA.getHeight() != imageB.getHeight()) {
             return false;
         }
