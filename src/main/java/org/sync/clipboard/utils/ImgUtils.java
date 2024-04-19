@@ -10,7 +10,6 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.Base64;
-import java.util.logging.Level;
 
 public class ImgUtils {
 
@@ -34,7 +33,7 @@ public class ImgUtils {
         return bufferedImage;
     }
 
-     public static String imageToString(BufferedImage image) {
+    public static String imageToString(BufferedImage image) {
         try {
             ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
             ImageIO.write(image, "png", outputStream);
@@ -58,7 +57,7 @@ public class ImgUtils {
     }
 
 
-     public static Image stringToImage(String imageString) {
+    public static Image stringToImage(String imageString) {
         try {
             if (!isValidBase64(imageString)) {
                 return null;
@@ -66,14 +65,14 @@ public class ImgUtils {
             byte[] imageBytes = Base64.getDecoder().decode(imageString);
             ByteArrayInputStream inputStream = new ByteArrayInputStream(imageBytes);
             BufferedImage read = ImageIO.read(inputStream);
-            return toImage(read)==null ? null:read;
+            return toImage(read) == null ? null : read;
         } catch (IOException e) {
             return null;
         }
     }
 
     private static Image toImage(BufferedImage bufferedImage) {
-        return bufferedImage==null? null : bufferedImage.getScaledInstance(
+        return bufferedImage == null ? null : bufferedImage.getScaledInstance(
                 bufferedImage.getWidth(),
                 bufferedImage.getHeight(),
                 Image.SCALE_DEFAULT
