@@ -44,13 +44,23 @@ public class ImgUtils {
             e.printStackTrace();
             return null;
         }
+
+
     }
 
+    private static boolean isValidBase64(String str) {
+        try {
+            Base64.getDecoder().decode(str);
+            return true; // 如果解码成功，说明是有效的 Base64 编码
+        } catch (IllegalArgumentException e) {
+            return false; // 解码失败，说明不是有效的 Base64 编码
+        }
+    }
 
 
      public static Image stringToImage(String imageString) {
         try {
-            if (imageString == null || !imageString.matches("^[A-Za-z0-9+/=]*$")) {
+            if (!isValidBase64(imageString)) {
                 return null;
             }
             byte[] imageBytes = Base64.getDecoder().decode(imageString);

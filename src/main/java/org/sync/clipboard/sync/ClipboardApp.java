@@ -28,6 +28,9 @@ public class ClipboardApp {
         }
     }
 
+
+
+
     /**
      * 写入剪贴板
      */
