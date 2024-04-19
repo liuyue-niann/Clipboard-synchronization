@@ -22,7 +22,7 @@ public class SyncClipboardApp implements ClipboardListen {
         if (clazz == String.class) {
             NetClient.send((String) object);
         } else if (clazz == Image.class) {
-            //TODO 未完成
+            //TODO
         }
     }
 

@@ -6,6 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.sync.clipboard.sync.ClipboardApp;
 
+import java.awt.*;
 import java.net.URI;
 import java.net.URISyntaxException;
 
@@ -23,6 +24,7 @@ public class Client extends WebSocketClient {
             try {
                 if (isOpen()) {
                     super.send(message);
+
                     log.info("send:{}", message);
                     break;
                 }
@@ -31,6 +33,14 @@ public class Client extends WebSocketClient {
                 throw new RuntimeException(e);
             }
         }
+    }
+
+    /**
+     * 发送图片
+     * @param image
+     */
+    public void send(Image image){
+        //TODO
     }
 
     @Override

@@ -21,7 +21,6 @@ public interface ClipboardListen {
                 if (clipboard.isDataFlavorAvailable(DataFlavor.stringFlavor)) {
                     String data = (String) clipboard.getData(DataFlavor.stringFlavor);
                     //发生改变
-
                     change(data, String.class);
                 } else if (clipboard.isDataFlavorAvailable(DataFlavor.imageFlavor)) {
                     Image data = (Image) clipboard.getData(DataFlavor.imageFlavor);
@@ -35,11 +34,12 @@ public interface ClipboardListen {
         // Keep the program running so it can listen to clipboard changes
         while (true) {
             try {
-                Thread.sleep(2000);
+                Thread.sleep(500);
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
         }
+
 
 
     }

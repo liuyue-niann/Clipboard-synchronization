@@ -15,7 +15,6 @@ public class ClipboardApp {
      * @return string
      */
     public static String write() {
-
         try {
             Transferable contents = clipboard.getContents(null);
             return (String) contents.getTransferData(DataFlavor.stringFlavor);
