@@ -2,6 +2,7 @@ package org.sync.clipboard.sync;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.sync.clipboard.listen.ClipboardListen;
 import org.sync.clipboard.utils.ImgUtils;
 
 import java.awt.*;
@@ -19,14 +20,8 @@ public class ClipboardApp {
      *
      * @return string
      */
-    public static Transferable write() {
-        return clipboard.getContents(null);
-
-    }
-
-
-    private static boolean isString(Transferable transferable) {
-        return transferable.isDataFlavorSupported(DataFlavor.stringFlavor);
+    public static Clipboard write() {
+        return clipboard;
     }
 
 
@@ -34,28 +29,22 @@ public class ClipboardApp {
      * 写入剪贴板
      */
     public static void read(String text) {
-        Image image = ImgUtils.stringToImage(text);
-        if (image != null) {
-            read(image);
-        } else {
-            Transferable transferable = write();
-            if (isString(transferable)) {
-                try {
-                    String oldText =(String) transferable.getTransferData(DataFlavor.stringFlavor);
-                    if (!oldText.equals(text)) {
-                        StringSelection selection = new StringSelection(text);
-                        clipboard.setContents(selection, null);
-                        log.info("read Clipboard:{}", text);
-
-                    }
-                } catch (Exception e) {
-                    throw new RuntimeException(e);
-                }
-
+        try {
+            Image image = ImgUtils.stringToImage(text);
+            if (image == null) {
+                StringSelection selection = new StringSelection(text);
+                clipboard.setContents(selection, null);
+                log.info("写入剪贴板文本:{}", text);
+            } else {
+                ImageSelection selection = new ImageSelection(image);
+                clipboard.setContents(selection, null);
+                log.info("写入剪贴板图片:{}", text);
             }
-
+            Transferable content = getClipboardContent();
+            ClipboardListen.setLastClipboardContent(content);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
-
     }
 
     public static void read(Image image) {
@@ -65,7 +54,11 @@ public class ClipboardApp {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
+    }
 
+    public static synchronized Transferable getClipboardContent() {
+        Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+        return clipboard.getContents(null);
     }
 
 }
@@ -105,4 +98,6 @@ class ImageSelection implements Transferable {
             throw new UnsupportedFlavorException(flavor);
         }
     }
+
+
 }

@@ -16,10 +16,10 @@ public class ImgUtils {
     private static final Logger log = LoggerFactory.getLogger(ImgUtils.class);
 
     public static BufferedImage toBufferedImage(Image image) {
+        if (image == null) return null;
         if (image instanceof BufferedImage) {
             return (BufferedImage) image;
         }
-
         BufferedImage bufferedImage = new BufferedImage(
                 image.getWidth(null),
                 image.getHeight(null),
@@ -43,8 +43,25 @@ public class ImgUtils {
             e.printStackTrace();
             return null;
         }
+    }
 
+    public static boolean compareImages(BufferedImage imageA, BufferedImage imageB) {
+        if (imageA == null || imageB == null) return imageA == imageB;
+        if (imageA.getWidth() != imageB.getWidth() || imageA.getHeight() != imageB.getHeight()) {
+            return false;
+        }
+        for (int y = 0; y < imageA.getHeight(); y++) {
+            for (int x = 0; x < imageA.getWidth(); x++) {
+                if (imageA.getRGB(x, y) != imageB.getRGB(x, y)) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
 
+    public static boolean compareImages(Image imageA, Image imageB) {
+        return compareImages(toBufferedImage(imageA), toBufferedImage(imageB));
     }
 
     private static boolean isValidBase64(String str) {
