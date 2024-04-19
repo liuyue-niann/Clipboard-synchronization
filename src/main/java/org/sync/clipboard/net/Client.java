@@ -24,7 +24,7 @@ public class Client extends WebSocketClient {
             try {
                 if (isOpen()) {
                     super.send(message);
-                    log.info("发送数据:{}", message);
+                    log.info("send:{}", message);
                     break;
                 }
             } catch (Exception e) {
