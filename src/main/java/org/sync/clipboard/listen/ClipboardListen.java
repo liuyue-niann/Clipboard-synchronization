@@ -20,7 +20,7 @@ public abstract class ClipboardListen {
 
     private static final Logger log = LoggerFactory.getLogger(ClipboardListen.class);
 
-    static Transferable lastClipboardContent = null;
+    private static Transferable lastClipboardContent = null;
 
     public static synchronized Transferable getLastClipboardContent() {
         return lastClipboardContent;
@@ -53,7 +53,6 @@ public abstract class ClipboardListen {
                 return false;
             }
         }
-        ClipboardListen.setLastClipboardContent(ClipboardApp.getClipboardContent());
         return false;
     }
 
@@ -90,6 +89,8 @@ public abstract class ClipboardListen {
                             throw new RuntimeException(e);
                         }
                     }
+                     ClipboardListen.setLastClipboardContent(clipboardContent);
+
                 }
 
                 // 等待一段时间后再次轮询
