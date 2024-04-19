@@ -12,6 +12,9 @@ import java.awt.datatransfer.UnsupportedFlavorException;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 
+/**
+ * 剪贴板监听轮询`
+ */
 public abstract class ClipboardListen {
 
     private static final Logger log = LoggerFactory.getLogger(ClipboardListen.class);
@@ -61,7 +64,6 @@ public abstract class ClipboardListen {
                 }
             }
         });
-
         // 启动线程
         pollingThread.start();
     }

@@ -1,5 +1,8 @@
 package org.sync.clipboard.sync;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.awt.*;
 import java.awt.datatransfer.*;
 import java.io.IOException;
@@ -8,6 +11,7 @@ public class ClipboardApp {
 
 
     final static Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+    private static final Logger log = LoggerFactory.getLogger(ClipboardApp.class);
 
     /**
      * 读取本机剪贴板数据
@@ -27,9 +31,12 @@ public class ClipboardApp {
      * 写入剪贴板
      */
     public static void read(String text) {
+        String oldText = write();
+        if (oldText.equals(text)) return;
         try {
             StringSelection selection = new StringSelection(text);
             clipboard.setContents(selection, null);
+            log.info("read Clipboard:{}",text);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

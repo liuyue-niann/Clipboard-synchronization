@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.sync.clipboard.utils.ConfUtils;
 
+import java.awt.*;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Set;
@@ -30,5 +31,8 @@ public class NetClient {
                 throw new RuntimeException(e);
             }
         }
+    }
+    public static void send(Image text) {
+
     }
 }
