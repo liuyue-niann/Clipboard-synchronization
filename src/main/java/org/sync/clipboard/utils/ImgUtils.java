@@ -10,16 +10,17 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.Base64;
+import java.util.IllegalFormatCodePointException;
 
 public class ImgUtils {
 
     private static final Logger log = LoggerFactory.getLogger(ImgUtils.class);
 
     public static BufferedImage toBufferedImage(Image image) {
+        if (image==null) return null;
         if (image instanceof BufferedImage) {
             return (BufferedImage) image;
         }
-
         BufferedImage bufferedImage = new BufferedImage(
                 image.getWidth(null),
                 image.getHeight(null),
@@ -46,7 +47,8 @@ public class ImgUtils {
     }
 
     public static boolean compareImages(BufferedImage imageA, BufferedImage imageB) {
-        if (imageA==null ) {
+        if (imageA==null && imageB == null) return true;
+        if (imageA==null) {
             return false;
         }
         if (imageB==null ) {
