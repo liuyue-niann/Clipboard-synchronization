@@ -30,16 +30,16 @@ public class ClipboardApp {
     public static void read(String text) {
         try {
             Image image = ImgUtils.stringToImage(text);
-            if (image==null) {
+            if (image == null) {
                 StringSelection selection = new StringSelection(text);
-                            clipboard.setContents(selection, null);
-                            log.info("写入剪贴板文本:{}", text);
-            }else {
-                 ImageSelection selection = new ImageSelection(image);
-                            clipboard.setContents(selection, null);
-                            log.info("写入剪贴板图片:{}", text);
+                clipboard.setContents(selection, null);
+                log.info("写入剪贴板文本:{}", text);
+            } else {
+                ImageSelection selection = new ImageSelection(image);
+                clipboard.setContents(selection, null);
+                log.info("写入剪贴板图片:{}", text);
             }
-        }catch (Exception e) {
+        } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
